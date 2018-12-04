@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto:300,400,500');/*
+
+size / 16 --> rem
+ */
+
+* {
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    transition: .3s opacity;
+    text-decoration: none;
+    opacity: 1;
+}
+
+body {
+    overflow-y: hidden;
+}
+
+.input {
+    border: 1px solid #757575;
+    border-radius: 0.5rem;
+    width: 100%;
+    padding: 1rem 0.875rem;
+    position: relative;
+    height: 3.5rem;
+    cursor: text;
+}
+
+.input:hover:not(.error) {
+    border-color: #404347;
+}
+
+.input::before {
+    content: attr(data-placeholder);
+
+    font-size: 0.75rem;
+    letter-spacing: 0.025rem;
+    color: #767a7e;
+
+    padding: 0 0.25rem;
+    background-color: white;
+
+    position: absolute;
+    top: 1.75rem;
+    transform: translateY(-50%);
+    z-index: 10;
+
+    transition: color .4s, top .6s;
+}
+
+.input.not-empty::before, .input.focus::before {
+    top: 0;
+    color: black;
+}
+
+.input.focus {
+    border-color: #2196f3;
+}
+
+.input.focus::before {
+    color: #2196f3;
+}
+
+input[type=text], input[type=password], input[type=date], input[type=time], select {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: none;
+    font-size: 1rem;
+    letter-spacing: 0.009375rem;
+}
+
+button {
+    color: #fff;
+    background-color: #2196f3;
+    height: 2.25rem;
+    border: 1px solid #757575;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: 1s box-shadow;
+}
+/*
+button:hover {
+    box-shadow: #0069c0 0 1px 1px 0, #6ec6ff 0 1px 3px 1px;
+}
+*/
+
+/*
+%%%%%%%%%% Typography %%%%%%%%%%
+ */
+
+h1, h2 {
+    font-weight: 300;
+}
+
+h3, h4, h5, .subtitle1 {
+    font-weight: 400;
+}
+
+h6, button {
+    font-weight: 500;
+}
+
+h1 {
+    font-size: 6rem;
+    letter-spacing: -0.09375rem;
+}
+
+h2 {
+    font-size: 3.75rem;
+    letter-spacing: -0.03125rem;
+}
+
+h3 {
+    font-size: 3rem;
+    letter-spacing: 0;
+}
+
+h4 {
+    font-size: 2.125rem;
+    letter-spacing: 0.015625rem;
+}
+
+h5 {
+    font-size: 1.5rem;
+    letter-spacing: 0;
+}
+
+h6 {
+    letter-spacing: 0.09375rem;
+    font-size: 1.25rem;
+}
+
+.subtitle1 {
+    font-size: 1rem;
+    letter-spacing: 0.09375rem;
+    opacity: 0.4;
+}
+
+button {
+    font-size: 0.875rem;
+    letter-spacing: 0.078125rem;
+    text-transform: uppercase;
+}
+
+/*
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ */
+
+.error {
+    border-color: red !important;
+}
+.good {
+    border-color: green !important;
+}
+
+i {
+    cursor: pointer;
+}
+
+.top-bar {
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    height: 4.5rem;
+    line-height: 0.33;
+    width: 100%;
+    background-color: #0069c0;
+    position: sticky;
+    box-shadow: 2px 4px 10px rgba(0,0,0,.2);
+}
+
+.side-nav {
+    width: 17.5rem;
+    position: absolute;
+    float: left;
+    display: block;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    background-color: #0069c0;
+    opacity: 1 !important;
+    color: white;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 100vh;
+    transition: transform .5s;
+    transform: translateX(-100%);
+    border-right: 1px solid #6ec6ff;
+}
+
+.side-nav-title {
+    padding-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    padding-top: 2.5rem;
+    font-size: 1.125rem;
+    font-weight: 400;
+    display: block;
+}
+
+.side-nav-main-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    color: white;
+    height: 4.5rem;
+    text-decoration: none;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 2.5rem;
+}
+
+.side-nav-main-title, .side-nav-section {
+    border-bottom: 1px solid #6ec6ff;
+}
+
+.side-nav-section {
+    padding-bottom: 2.5rem;
+}
+.side-nav-link {
+    padding: 0.75rem 3rem 0.75rem 1.5rem;
+
+    font-size: 0.75rem;
+    display: block;
+
+    cursor: pointer;
+    transition: .2s background-color;
+}
+.side-nav-link:hover {
+    background-color: #6ec6ff;
+}
+.side-nav-active {
+    transform: translateX(0);
+}
+
+.btn-warning {
+    background-color: red;
+}
+
+.cloud {
+    opacity: .3;
+}
+
+/*
+%%%%%%%%%% Snackbar %%%%%%%%%%
+ */
+.snackbar {
+    text-align: right;
+    position: absolute;
+    bottom: 0;
+    z-index: 10;
+    height: 3rem;
+    background-color: #2196f3;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    color: white;
+    margin: auto;
+    max-width: 80%;
+    left: 0;
+    right: 0;
+    transform: translateY(100%);
+    transition: transform 1s;
+}
+.snackbar-visible {
+    transform: translateY(-10%);
+}
+/*
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ */
+
+.no-transition {
+    transition: none !important;
+}

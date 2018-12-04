@@ -1,0 +1,22 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: #e5e5e5;
+}
+
+.container {
+    text-align: center;
+    border: 1px solid transparent;
+    width: 50%;
+    background-color: #fff;
+    padding: 1rem;
+    box-shadow: rgba(60, 64, 67, 0.08) 0 1px 1px 0, rgba(60, 64, 67, 0.16) 0 1px 3px 1px;
+    border-radius: 0.5rem;
+}
+
+form, button {
+    width: 100%;
+}

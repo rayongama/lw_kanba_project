@@ -1,0 +1,130 @@
+.top-bar {
+    transition: .5s box-shadow, .5s opacity;
+}
+
+main, header {
+    opacity: 1;
+    transition: .5s opacity, .5s box-shadow;
+}
+
+header span {
+    margin: auto;
+    color: white;
+    font-size: 1.5rem;
+    letter-spacing: 0;
+}
+
+body {
+    min-height: 100vh;
+}
+
+.float-right {
+    float: right;
+    color: white;
+}
+
+main {
+    background-color: #e5e5e5;
+    display: flex;
+    min-height: calc(100vh - 4.5rem);
+}
+
+.todo-list h6 {
+    margin-bottom: 1rem;
+}
+
+.todo {
+    display: flex;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid black;
+    cursor: pointer;
+}
+
+
+
+header.cloud *, main.cloud * {
+    cursor: default;
+}
+
+main:not(.cloud) .todo:hover {
+    color: #2196f3;
+}
+
+.todo-list {
+    margin: 1rem;
+    width: 21.5rem;
+    border-radius: 0.5rem;
+    padding: 1rem;
+   background-color: #ffffff;
+    transition: opacity .5s, transform .5s;
+    transform: scaleY(1);
+    transform-origin: bottom;
+    opacity: 1;
+}
+
+.todo-list-not-visible {
+    opacity: 0;
+    transform: scaleY(0);
+}
+
+.todo-time {
+    opacity: 0.4;
+    font-size: 0.5rem;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.todo-time span {
+    margin-left: 0.5rem;
+}
+
+.todo-list-end {
+   margin-left: auto;
+}
+
+.todo-title {
+    font-size: .66rem;
+    display: flex;
+    align-items: center;
+}
+
+.todo-edit {
+    padding: 1rem;
+    width: 21.5rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: scale(1) translateX(-50%) translateY(-50%);
+    transform-origin: 0 0;
+    opacity: 1;
+    z-index: 10;
+    background-color: white;
+    box-shadow: rgba(60, 64, 67, 0.08) 0 1px 1px 0, rgba(60, 64, 67, 0.16) 0 1px 3px 1px;
+    transition: transform .5s, opacity .5s, box-shadow .5s, top .5s, left .5s;
+}
+
+
+.todo-edit button {
+    width: 100%;
+    margin-bottom: 0.25rem;
+}
+.todo-edit .subtitle1 {
+    height: 1.5rem;
+    display: inline-block;
+}
+.todo-edit i {
+    opacity: .4;
+    float: right;
+}
+
+input[type=date], input[type=time] {
+    display: inline;
+    width: auto;
+}
+
+.not-visible {
+    transform: scale(0) translateX(-50%) translateY(-50%);
+    opacity: 0;
+}
