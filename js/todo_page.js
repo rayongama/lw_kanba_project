@@ -20,13 +20,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const todoEdit = document.querySelector(".todo-edit");
 
     const container = document.querySelector(".container");
+    const containerLinks = container.querySelectorAll(".link");
 
 
     const navSections = document.querySelectorAll(".side-nav-section");
     const kanbasPrivate = navSections[0];
     const kanbasPublic = navSections[1];
-
-    console.log(kanbasPublic);
 
 
     // Contient tout les todos.
@@ -50,7 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const saveKanbaPrivacy = (id, privacy) => {
-        console.log(privacy);
         fetch(`/api/?q=kanba-edit&id=${id}&private=${!privacy}`).then(() => {
             popSnackbar();
             const e = Array     .from(document  .querySelectorAll(".side-nav-link"))
@@ -93,13 +91,19 @@ document.addEventListener("DOMContentLoaded", () => {
         hamburger.classList.remove('no-control');
     };
 
-    kanbaNav = (slug, force = false) => {
+    kanbaNav = (slug, force = false, noControl = false) => {
         if (force || history.state !== slug) {
+            console.log(window.location);
             if (container) {
                 container.remove();
             }
             document.body.focus();
-            history.pushState(slug, slug, `/${slug}`);
+            if (noControl) {
+                history.pushState(slug, slug, `/${slug}#visualiser`);
+            } else {
+                history.pushState(slug, slug, `/${slug}`);
+            }
+
             sideNavClose();
             const kanbaId = slug.split('-')[0];
             if (kanbaId !== "-1") {
@@ -121,7 +125,32 @@ document.addEventListener("DOMContentLoaded", () => {
                     headerTitle.dataset.title = kanba.title;
                     headerTitle.classList.add("header-title");
                     headerTitle.data = kanba.title;
-                    headerTitle.range = window.getSelection().getRangeAt(0).cloneRange();
+                    if (window.getSelection().rangeCount >= 1) {
+                        headerTitle.range = window.getSelection().getRangeAt(0).cloneRange();
+                    }
+                    if (!noControl) {
+                        headerTitle.contentEditable = "true";
+                        headerTitle.title = "Modification du titre";
+                    }
+                    if (noControl) {
+                        kanbaPrivate.parentElement.classList.add("no-control");
+                        kanbaEdit.classList.add("no-control");
+                        headerTitle.classList.add("no-control");
+                        kanbaDelete.disabled = true;
+                        btns.forEach(b => b.disabled = true);
+                        inputs.forEach(i => i.disabled = true);
+                        inputMove.disabled = true;
+                        inputDescription.disabled = true;
+                    } else {
+                        kanbaPrivate.parentElement.classList.remove("no-control");
+                        kanbaEdit.classList.remove("no-control");
+                        headerTitle.classList.remove("no-control");
+                        kanbaDelete.disabled = false;
+                        btns.forEach(b => b.disabled = false);
+                        inputs.forEach(i => i.disabled = false);
+                        inputMove.disabled = false;
+                        inputDescription.disabled = false;
+                    }
                     inputMove.innerHTML = "";
                     const newTodos = [];
                     kanba.lists.forEach(l => {
@@ -187,9 +216,29 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     if (window.location.pathname.length !== 1) {
-        kanbaNav(decodeURIComponent(window.location.pathname.substring(1)));
+        if (window.location.hash) {
+            kanbaNav(decodeURIComponent(window.location.pathname.substring(1)), true, true);
+        } else {
+            kanbaNav(decodeURIComponent(window.location.pathname.substring(1)), true);
+        }
+
     }
 
+
+    /*
+        EV : On veut créer un nouveau Kanba
+     */
+    containerLinks[1].addEventListener("click", () => {
+        fetch(`/api/?q=kanba-new&ownerId=${document.body.dataset.owner}`).then((r) => {
+            r.json().then((e) => {
+                console.log(e);
+                const li = document.createElement("li");
+                li.innerHTML = `<a onclick="kanbaNav('${e.slug}')" class="side-nav-link">${e.title}</a></li>`
+                kanbasPublic.appendChild(li);
+                kanbaNav(e.slug);
+            });
+        });
+    });
 
     /*
         EV : Fermeture de la fenêtre d'édition d'une tâche
@@ -199,6 +248,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const kanbaEdit = document.querySelector(".kanba-edit");
     const kanbaPrivate = kanbaEdit.querySelector("input[type=checkbox");
+    const kanbaDelete = kanbaEdit.querySelector("button");
+
+    /*
+        EV : On veut supprimer un Kanba
+     */
+    kanbaDelete.addEventListener("click", () => {
+        if (confirm("Voulez-vous vraiment supprimer ce Kanba ?")) {
+            fetch(`/api/?q=kanba-remove&id=${document.body.dataset.kanba}`).then(() => {
+               window.location = '/';
+            });
+        }
+    });
 
     /*
         EV : On clique sur la checkbox pour la portée du Kanba

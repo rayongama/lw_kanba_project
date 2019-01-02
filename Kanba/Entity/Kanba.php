@@ -94,15 +94,6 @@ class Kanba extends AbstractEntity
    */
 
 
-  /*
-   * COMMANDES
-   */
-/*
-  public static function createNewKanba() {
-    $pdo = MyPDO::getPDO();
-    $pdo->prepare("INSERT INTO kanba (title, ownerId, private) ")
-  }
-*/
   /**
    * Effectue une mise à jour de l'entité dans la base de donnée.
    * @param \PDO $pdo
@@ -120,7 +111,7 @@ class Kanba extends AbstractEntity
   }
 
   /**
-   * Charge réellement le Kanba (la liste de toute ses tâches).
+   * Charge la liste de toutes les taches associées à ce Kanba.
    */
   public function loadKanba(): void
   {
@@ -144,10 +135,59 @@ class Kanba extends AbstractEntity
     }
   }
 
+  /**
+   * Retourne la liste des tâches.
+   * @return array
+   */
 
-  public function getLists()
+  public function getLists(): array
   {
     return $this->lists;
+  }
+
+  /**
+   * Renvoie le nom d'utilisateur du Kanba associé.
+   * @return string
+   */
+  public function getOwnerName() {
+    return MyPDO::getFieldValueById(User::getTableName(), $this->getOwnerId(), 'username');
+  }
+
+  /**
+   * Renvoie une liste contenant tout les kanbas publics de la base de donnée.
+   * @return array
+   */
+  static function getPublicArray(): array {
+    $t = MyPDO::getPDO()->prepare("SELECT * FROM kanba WHERE private = 0");
+    $t->execute();
+    $r = $t->fetchAll();
+    return $r;
+  }
+
+  /**
+   * Créer un nouveau Kanba
+   * @param $ownerId l'utilisateur à qui appartient ce kanba
+   * @return \stdClass
+   */
+  static function create(int $ownerId): \stdClass {
+    $table = self::getTableName();
+    $tableList = TodoList::getTableName();
+    MyPDO::getPDO()
+      ->prepare("INSERT INTO $table (title, ownerId, private) VALUES ('Nouveau kanba', $ownerId, 0)")
+      ->execute();
+    $t = MyPDO::getPDO()->prepare("SELECT MAX(id) as 'id' FROM $table");
+    $t->execute();
+    $r = $t->fetch();
+    $k = new Kanba($r->id);
+    $d = new \stdClass();
+    $d->title = 'Nouveau kanba';
+    $d->id = $k->getId();
+    $d->slug = $k->getSlug();
+
+    MyPDO::getPDO()->prepare("INSERT INTO todo_list (kanba_id, title) VALUES ($d->id, 'Stories')")->execute();
+    MyPDO::getPDO()->prepare("INSERT INTO todo_list (kanba_id, title) VALUES ($d->id, 'Terminées')")->execute();
+
+    return $d;
   }
 
   /**

@@ -30,18 +30,26 @@ function transmitData($data)
 if (isset($_GET['q']) && !empty($_GET['q'])) {
   $q = htmlspecialchars($_GET['q']);
   switch ($q) {
+    case "kanba-list":
+      transmitData(Kanba::getPublicArray());
+      break;
     case "kanba":
       if (isset($_GET['id']) && !empty($_GET['id'])) {
         $id = htmlspecialchars($_GET['id']);
         $k = new Kanba($id);
         $u = User::getUserBySession($_SESSION);
-        if ($k->isPresent() && $k->belongsTo($u->getId())) {
-          $k->loadKanba();
-          $d = new \stdClass();
-          $d->title = $k->getTitle();
-          $d->lists = $k->getLists();
-          $d->private = $k->isPrivate();
-          transmitData($d);
+        if ($u->isCorrect()) {
+          if ($k->isPrivate() && $k->belongsTo($u->getId()) || !$k->isPrivate()) {
+            $k->loadKanba();
+            $d = new \stdClass();
+            $d->title = $k->getTitle();
+            $d->lists = $k->getLists();
+            $d->private = $k->isPrivate();
+            $d->ownerId = $k->getOwnerId();
+            transmitData($d);
+          } else {
+            error();
+          }
         } else {
           error();
         }
@@ -77,7 +85,7 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
         }
         $k = new Kanba($data->id);
         $u = User::getUserBySession($_SESSION);
-        if ($k->isPresent() && $k->belongsTo($u->getId())) {
+        if ($u->isCorrect() && $k->belongsTo($u->getId())) {
           $k->update(MyPDO::getPDO(), $data);
           transmitData($k->getSlug());
         } else {
@@ -85,6 +93,31 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
         }
       } else {
         error();
+      }
+      break;
+    case "kanba-remove":
+      if (isset($_GET['id']) && !empty($_GET['id'])) {
+        $id = htmlspecialchars($_GET['id']);
+        $k = new Kanba($id);
+        $u = User::getUserBySession($_SESSION);
+        if ($u->isCorrect() && $k->belongsTo($u->getId())) {
+          $k->remove();
+        } else {
+          error();
+        }
+      } else {
+        error();
+      }
+      break;
+    case "kanba-new":
+      if (isset($_GET['ownerId']) && !empty($_GET['ownerId'])) {
+        $ownerId = intval(htmlspecialchars($_GET['ownerId']));
+        $u = User::getUserBySession($_SESSION);
+        if ($u->isCorrect() && $u->getId() === $ownerId) {
+          transmitData(Kanba::create($ownerId));
+        } else {
+          error();
+        }
       }
       break;
     case "todo-remove":
@@ -107,9 +140,9 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
   $q = htmlspecialchars_decode($_POST['q']);
   switch ($q) {
     case "todo-edit":
-      $user = new User($_SESSION['username'], $_SESSION['password']);
+      $u = User::getUserBySession($_SESSION);
       // TODO: l'utilisateur à le droit de modifier cette tâche
-      if ($user->isCorrect()) {
+      if ($u->isCorrect()) {
         $data = new \stdClass();
         $data->id = isset($_POST['id']) ? intval($_POST['id']) : -1;
         $data->list_id = isset($_POST['list_id']) ? intval($_POST['list_id']) : -1;
@@ -119,13 +152,11 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
         $data->move = isset($_POST['move']) ? intval($_POST['move']) : '';
         $data->description = isset($_POST['description']) ? $_POST['description'] : '';
         $todo = new Todo($data->id);
-        if ($todo->isPresent() && $todo->getOwnerId() === User::getUserBySession($_SESSION)->getId()) {
+        if (isset($_POST['new']) && $_POST['new'] === "true") {
+          $todo->add(MyPDO::getPDO(), $data);
+        }else if ($todo->isPresent() && $todo->getOwnerId() === $u->getId()) {
           $pdo = MyPDO::getPDO();
-          if (isset($_POST['new']) && $_POST['new'] === "true") {
-            $todo->add($pdo, $data);
-          } else {
-            $todo->update($pdo, $data);
-          }
+          $todo->update($pdo, $data);
         } else {
           error();
         }

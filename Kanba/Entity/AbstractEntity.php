@@ -29,14 +29,24 @@ abstract class AbstractEntity implements IEntity
    */
   protected $id;
 
-  private static function unifyValue($v) {
+  /**
+   * Renvoie un int ou une chaîne de caractère selon la valeur du paramètre.
+   * @param string $v
+   * @return int|string
+   */
+  private static function unifyValue(string $v) {
     if (is_numeric($v)) {
       return intval($v);
     }
     return strval($v);
   }
 
-  public function getProperty($property) {
+  /**
+   * Recupère n'importe qu'elle propriété de l'entité à partir de son id.
+   * @param string $property
+   * @return int|null
+   */
+  public function getProperty(string $property) {
     if ($property !== AbstractEntity::ID_FIELD) {
       $table = $this->getTableName();
       $id = $this->getId();
@@ -62,7 +72,12 @@ abstract class AbstractEntity implements IEntity
     }
   }
 
-  public function setProperty($property, $value) {
+  /**
+   * Permet de definir n'importe quelle propriété de l'entité.
+   * @param string $property
+   * @param string|int $value
+   */
+  public function setProperty(string $property, $value): void {
     $p = $this->getProperty($property);
     if ($p !== $value) {
       $id = $this->getId();
@@ -82,11 +97,13 @@ abstract class AbstractEntity implements IEntity
     return $this->getProperty('id');
   }
 
-  protected function load($fieldName) {
-    $table = $this->getTableName();
-    $id = self::getId();
-  }
 
+  /**
+   * Charge un champ de l'entité à partir de son id dans la base de donnée.
+   * @param \PDO $pdo
+   * @param string $fieldName
+   * @return mixed
+   */
   protected function loadField(\PDO $pdo, string $fieldName) {
     $table = $this->getTableName();
     $id = self::getId();
@@ -99,6 +116,12 @@ abstract class AbstractEntity implements IEntity
     return $r->$fieldName;
   }
 
+  /**
+   * Met à jour un champ de l'entité dans la base de donnée à partir de son id.
+   * @param \PDO $pdo
+   * @param string $fieldName
+   * @param mixed $value
+   */
   protected function updateField(\PDO $pdo, string $fieldName, $value): void {
     $table = $this->getTableName();
     $id = self::getId();
@@ -109,8 +132,12 @@ abstract class AbstractEntity implements IEntity
     }
   }
 
+  /**
+   * Permet de savoir si une entité existe dans la base de donnée selon son id.
+   * @return bool
+   */
   public function isPresent() {
-    return MyPDO::getFieldValueById($this->getTableName(), AbstractEntity::ID_FIELD, $this->getId()) !== null;
+    return MyPDO::getFieldValueById($this->getTableName(), $this->getId(), AbstractEntity::ID_FIELD) !== null;
   }
 
   /**

@@ -5,9 +5,10 @@ use Kanba\Entity\User;
 session_start();
 
 require_once($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "autoload.php");
-
+$id = "";
 if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
   $user = new User($_SESSION['username'], $_SESSION['password']);
+  $id = $user->getId();
 }
 $isLogged = false;
 if (isset($user) && $user->isCorrect()) {
@@ -16,6 +17,8 @@ if (isset($user) && $user->isCorrect()) {
 if (!$isLogged) {
   header("Location: se-connecter.php");
 }
+
+$c = 0;
 
 ?>
 <!DOCTYPE html>
@@ -30,18 +33,18 @@ if (!$isLogged) {
   <link href="/css/index.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
+<body data-owner="<?= $id ?>">
 <div class="side-nav">
   <a href="/" class="side-nav-main-title"><?= \Kanba\Configurator::getEntry("TITLE") ?></a>
   <span class="side-nav-title">Vos tableaux privés</span>
   <ul class="side-nav-section">
-    <?php foreach ($user->getKanbas(true) as $k): ?>
+    <?php foreach ($user->getKanbas(true) as $k): $c++;?>
       <li><a onclick="kanbaNav('<?= $k->getSlug() ?>')" class="side-nav-link"><?= $k->getTitle() ?></a></li>
     <?php endforeach; ?>
   </ul>
   <span class="side-nav-title">Vos tableaux public</span>
   <ul class="side-nav-section">
-    <?php foreach ($user->getKanbas(false) as $k): ?>
+    <?php foreach ($user->getKanbas(false) as $k): $c++;?>
       <li><a onclick="kanbaNav('<?= $k->getSlug() ?>')" class="side-nav-link"><?= $k->getTitle() ?></a></li>
     <?php endforeach; ?>
   </ul>
@@ -49,7 +52,7 @@ if (!$isLogged) {
 <header class="top-bar">
   <i title="Menu" class="hamburger material-icons">menu</i>
   <div class="kanba-edit">
-    <span contenteditable="true">Bonjour <?= $user->getName() ?></span>
+    <span>Bonjour <?= $user->getName() ?></span>
     <label for="is-private" class="checkbox">
     <span class="switch">
       <input type="checkbox" id="is-private" class="checkbox" data-checked="false">
@@ -60,6 +63,8 @@ if (!$isLogged) {
       </span>
     </span>
     </label>
+    <button class="btn-warning">Supprimer</button>
+    <button class="add-list">Ajouter une liste</button>
   </div>
   <a href="/logout.php"><i title="Se déconnecter" class="float-right material-icons">clear</i></a>
 </header>
@@ -100,8 +105,17 @@ if (!$isLogged) {
 </div>
 <main>
   <div class="container">
-    <a class="link" href="/x-un-nouveau-kanba"><h5>Créer un nouveau kanba</h5></a>
-    <a class="link" href="/x-un-nouveau-kanba"><h5>Supprimer un kanba</h5></a>
+    <a href="/les-kanbas.php" class="link"><h5>La liste des kanbas publics</h5></a>
+    <br/>
+    <a class="link"><h5>Créer un nouveau kanba</h5></a>
+    <br/>
+    <?php if ($c === 0): ?>
+      <p>Vous ne disposez d'aucun Kanba.</p>
+    <?php elseif ($c === 1): ?>
+      <p>Vous disposez d'un unique Kanba.</p>
+    <?php else: ?>
+      <p>Vous disposez de <?= $c ?> Kanbas.</p>
+    <?php endif; ?>
   </div>
 </main>
 <div class="snackbar">Modification(s) enregistrée(s).</div>

@@ -158,7 +158,7 @@ details[open] {
   transition: border-bottom-color .4s, background-color .4s, padding-left .3s, padding-right .3s, width .8s;
 }
 
-.header-title:hover, .header-title:focus {
+.header-title:not(.no-control):hover, .header-title:not(.no-control):focus {
   border-bottom-color: #ffffff;
 }
 
@@ -178,6 +178,36 @@ label {
   cursor: pointer;
 }
 
+.link {
+  cursor: pointer;
+}
+
+.kanba-edit button {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: .3rem;
+  width: 7rem;
+}
+
+.kanba-edit .add-list {
+  font-size: .6rem;
+}
+
+.switch {
+  opacity: 1;
+}
+
+.switch.no-control {
+  opacity: .3;
+  cursor: default;
+}
+
+body:not([data-kanba]) .switch, body:not([data-kanba]) button {
+  display: none;
+}
+
 .switch {
   width: 7rem;
   display: inline-block;
@@ -195,6 +225,7 @@ label {
   height: 2rem;
   display: inline-block;
   margin-left: -5rem;
+  transition: margin .3s;
 }
 
 .switch-yes, .switch-no {
@@ -234,15 +265,16 @@ label {
   z-index: 2;
 }
 
-input:checked + .switch-container .switch-mid {
+.switch:not(.no-control) input:checked + .switch-container .switch-mid {
   border-color: #27ae60;
 }
 
-input:checked + .switch-container {
+.switch:not(.no-control) input:checked + .switch-container {
   margin: 0;
 }
 
-.kanba-edit {
+
+body[data-kanba] .kanba-edit {
   margin: auto;
   width: 95%;
   height: 100%;
@@ -252,16 +284,29 @@ input:checked + .switch-container {
   cursor: url('/css/baseline_edit_white_18dp.png'), text;
 }
 
+body[data-kanba] .kanba-edit.no-control {
+  cursor: default;
+}
+
 .kanba-edit .header-title {
   margin: auto;
+  width: 100%;
+  transition: width 1s;
 }
 
-.kanba-edit .checkbox {
+.kanba-edit:hover .header-title {
+  width: 80%;
+}
+
+.kanba-edit .checkbox, .kanba-edit button {
   margin-left: auto;
-  transform: translateY(-200%);
-  transition:  transform 1s;
+  transform: translateY(-200%) scale(0);
+  transition:  transform .8s;
+  transform-origin: center center;
 }
 
-.kanba-edit:hover .checkbox {
-  transform: translateY(0);
+
+.kanba-edit:hover .checkbox, .kanba-edit:hover button, .kanba-edit:hover .switch {
+  transform: translateY(0) scale(1);
+  width: 7rem;
 }

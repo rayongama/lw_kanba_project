@@ -101,7 +101,7 @@ class Todo extends AbstractEntity
   public function add(\PDO $pdo, \stdClass $data)
   {
     $table = self::getTableName();
-    $t = $pdo->prepare("INSERT INTO $table (title, description, todo_list_id, date, time) VALUES('$data->title', '$data->description', $data->list_id, '$data->date', '$data->time')");
+    $t = $pdo->prepare("INSERT INTO $table (title, description, todoListId, date, time) VALUES('$data->title', '$data->description', $data->list_id, '$data->date', '$data->time')");
     $t->execute();
   }
 

@@ -26,7 +26,7 @@ class User extends AbstractEntity
 
     $pdo = MyPDO::getPDO();
     $table = self::getTableName();
-    $t = $pdo->prepare("SELECT id, password FROM user WHERE username = '$username'");
+    $t = $pdo->prepare("SELECT id, password FROM $table WHERE username = '$username'");
     $t->execute();
     $r = $t->fetch();
     if ($r === null) {
@@ -38,6 +38,7 @@ class User extends AbstractEntity
     $this->kanbasIsLoaded = false;
     $this->kanbas = [];
   }
+
 
   public function isPresent() {
     return $this->passwordBdd !== null;
