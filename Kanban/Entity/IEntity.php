@@ -1,10 +1,10 @@
 <?php
 
-namespace Kanba\Entity;
+namespace Kanban\Entity;
 
 /**
  * Interface IEntity
- * @package Kanba\Entity
+ * @package Kanban\Entity
  */
 interface IEntity
 {

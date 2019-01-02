@@ -1,20 +1,20 @@
 <?php
 
-namespace Kanba\Entity;
+namespace Kanban\Entity;
 
 
 use Faker\Factory;
-use Kanba\MyPDO;
+use Kanban\MyPDO;
 
 /**
- * Class Kanba
- * Définit un Kanba
- * @package Kanba\Entity
+ * Class Kanban
+ * Définit un Kanban
+ * @package Kanban\Entity
  */
-class Kanba extends AbstractEntity
+class Kanban extends AbstractEntity
 {
 
-  const DEFAULT_TITLE = "Mon super Kanba";
+  const DEFAULT_TITLE = "Mon super Kanban";
 
   protected $ownerId;
   private $lists;
@@ -23,7 +23,7 @@ class Kanba extends AbstractEntity
 
 
   /**
-   * Kanba constructor.
+   * Kanban constructor.
    * @param string $id
    */
   public function __construct($id)
@@ -39,7 +39,7 @@ class Kanba extends AbstractEntity
 
 
   /**
-   * Récupère le titre du Kanba.
+   * Récupère le titre du Kanban.
    * @return string
    */
   public function getTitle(): string {
@@ -47,7 +47,7 @@ class Kanba extends AbstractEntity
   }
 
   /**
-   * Récupère l'id de l'utilisateur propriétaire de ce Kanba.
+   * Récupère l'id de l'utilisateur propriétaire de ce Kanban.
    * @return int
    */
   public function getOwnerId(): int {
@@ -65,7 +65,7 @@ class Kanba extends AbstractEntity
   }
 
   /**
-   * Récupère le slug associé au Kanba.
+   * Récupère le slug associé au Kanban.
    * Le slug est une chaîne de caractère composé du titre avec les caractères "'"
    * et les espaces remplacés par "-".
    * @return string
@@ -80,7 +80,7 @@ class Kanba extends AbstractEntity
   }
 
   /**
-   * Renvoie true si le Kanba appartient à l'utilisateur (par son id).
+   * Renvoie true si le Kanban appartient à l'utilisateur (par son id).
    * Sinon renvoie false.
    * @param $id
    * @return bool
@@ -111,7 +111,7 @@ class Kanba extends AbstractEntity
   }
 
   /**
-   * Charge la liste de toutes les taches associées à ce Kanba.
+   * Charge la liste de toutes les taches associées à ce Kanban.
    */
   public function loadKanba(): void
   {
@@ -146,7 +146,7 @@ class Kanba extends AbstractEntity
   }
 
   /**
-   * Renvoie le nom d'utilisateur du Kanba associé.
+   * Renvoie le nom d'utilisateur du Kanban associé.
    * @return string
    */
   public function getOwnerName() {
@@ -165,7 +165,7 @@ class Kanba extends AbstractEntity
   }
 
   /**
-   * Créer un nouveau Kanba
+   * Créer un nouveau Kanban
    * @param $ownerId l'utilisateur à qui appartient ce kanba
    * @return \stdClass
    */
@@ -178,7 +178,7 @@ class Kanba extends AbstractEntity
     $t = MyPDO::getPDO()->prepare("SELECT MAX(id) as 'id' FROM $table");
     $t->execute();
     $r = $t->fetch();
-    $k = new Kanba($r->id);
+    $k = new Kanban($r->id);
     $d = new \stdClass();
     $d->title = 'Nouveau kanba';
     $d->id = $k->getId();

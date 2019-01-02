@@ -1,11 +1,11 @@
 <?php
 
-namespace Kanba\Api;
+namespace Kanban\Api;
 
-use Kanba\Entity\Kanba;
-use Kanba\Entity\Todo;
-use Kanba\Entity\User;
-use Kanba\MyPDO;
+use Kanban\Entity\Kanban;
+use Kanban\Entity\Todo;
+use Kanban\Entity\User;
+use Kanban\MyPDO;
 
 session_start();
 
@@ -31,12 +31,12 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
   $q = htmlspecialchars($_GET['q']);
   switch ($q) {
     case "kanba-list":
-      transmitData(Kanba::getPublicArray());
+      transmitData(Kanban::getPublicArray());
       break;
     case "kanba":
       if (isset($_GET['id']) && !empty($_GET['id'])) {
         $id = htmlspecialchars($_GET['id']);
-        $k = new Kanba($id);
+        $k = new Kanban($id);
         $u = User::getUserBySession($_SESSION);
         if ($u->isCorrect()) {
           if ($k->isPrivate() && $k->belongsTo($u->getId()) || !$k->isPrivate()) {
@@ -83,7 +83,7 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
         if (isset($_GET['private']) && !empty($_GET['private'])) {
           $data->isPrivate = htmlspecialchars($_GET['private']) === "true" ? 1 : 0;
         }
-        $k = new Kanba($data->id);
+        $k = new Kanban($data->id);
         $u = User::getUserBySession($_SESSION);
         if ($u->isCorrect() && $k->belongsTo($u->getId())) {
           $k->update(MyPDO::getPDO(), $data);
@@ -98,7 +98,7 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
     case "kanba-remove":
       if (isset($_GET['id']) && !empty($_GET['id'])) {
         $id = htmlspecialchars($_GET['id']);
-        $k = new Kanba($id);
+        $k = new Kanban($id);
         $u = User::getUserBySession($_SESSION);
         if ($u->isCorrect() && $k->belongsTo($u->getId())) {
           $k->remove();
@@ -114,7 +114,7 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
         $ownerId = intval(htmlspecialchars($_GET['ownerId']));
         $u = User::getUserBySession($_SESSION);
         if ($u->isCorrect() && $u->getId() === $ownerId) {
-          transmitData(Kanba::create($ownerId));
+          transmitData(Kanban::create($ownerId));
         } else {
           error();
         }

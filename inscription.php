@@ -9,7 +9,7 @@ if (isset($_POST['username']) && !empty($_POST['username'])
   && isset($_POST['password']) && !empty($_POST['password'])) {
   $username = htmlspecialchars($_POST['username']);
   $password = htmlspecialchars($_POST['password']);
-  $user = new \Kanba\User($username, $password);
+  $user = new \Kanban\User($username, $password);
   if ($user->existsAndIsGood() === "EXISTS") {
     $error = true;
   } else {
@@ -25,7 +25,7 @@ if (isset($_POST['username']) && !empty($_POST['username'])
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?= \Kanba\Configurator::getEntry("TITLE") ?> - Inscription</title>
+  <title><?= \Kanban\Configurator::getEntry("TITLE") ?> - Inscription</title>
   <link href="/css/mymd.css" rel="stylesheet">
   <link href="/css/login.css" rel="stylesheet">
 </head>

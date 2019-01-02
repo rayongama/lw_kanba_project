@@ -1,22 +1,25 @@
 <?php
 
-use Kanba\Entity\User;
+use Kanban\Entity\User;
 
 session_start();
 
 require_once($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "autoload.php");
+
 $id = "";
 if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
-  $user = new User($_SESSION['username'], $_SESSION['password']);
-  $id = $user->getId();
+  $user = User::getUserBySession($_SESSION);
 }
 $isLogged = false;
 if (isset($user) && $user->isCorrect()) {
   $isLogged = true;
+  $id = $user->getId();
 }
+
 if (!$isLogged) {
   header("Location: se-connecter.php");
 }
+die;
 
 $c = 0;
 
@@ -26,7 +29,7 @@ $c = 0;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?= \Kanba\Configurator::getEntry("TITLE") ?> - Page d'accueil</title>
+  <title><?= \Kanban\Configurator::getEntry("TITLE") ?> - Page d'accueil</title>
   <link href="/css/mymd.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
         rel="stylesheet">
@@ -35,7 +38,7 @@ $c = 0;
 </head>
 <body data-owner="<?= $id ?>">
 <div class="side-nav">
-  <a href="/" class="side-nav-main-title"><?= \Kanba\Configurator::getEntry("TITLE") ?></a>
+  <a href="/" class="side-nav-main-title"><?= \Kanban\Configurator::getEntry("TITLE") ?></a>
   <span class="side-nav-title">Vos tableaux privés</span>
   <ul class="side-nav-section">
     <?php foreach ($user->getKanbas(true) as $k): $c++;?>
@@ -105,23 +108,23 @@ $c = 0;
 </div>
 <main>
   <div class="container">
-    <a href="/les-kanbas.php" class="link"><h5>La liste des kanbas publics</h5></a>
+    <a href="/les-kanbans.php" class="link"><h5>La liste des kanbans publics</h5></a>
     <br/>
-    <a class="link"><h5>Créer un nouveau kanba</h5></a>
+    <a class="link"><h5>Créer un nouveau kanban</h5></a>
     <br/>
     <?php if ($c === 0): ?>
-      <p>Vous ne disposez d'aucun Kanba.</p>
+      <p>Vous ne disposez d'aucun kanban.</p>
     <?php elseif ($c === 1): ?>
-      <p>Vous disposez d'un unique Kanba.</p>
+      <p>Vous disposez d'un unique kanban.</p>
     <?php else: ?>
-      <p>Vous disposez de <?= $c ?> Kanbas.</p>
+      <p>Vous disposez de <?= $c ?> kanban.</p>
     <?php endif; ?>
   </div>
 </main>
 <div class="snackbar">Modification(s) enregistrée(s).</div>
 
 <script src="/js/todo_page.js"></script>
-<script src="/js/Kanba.js"></script>
+<script src="/js/Kanban.js"></script>
 
 <script src="/js/mymd.js"></script>
 </body>

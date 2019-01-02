@@ -1,8 +1,8 @@
 <?php
 
 use Faker\Factory;
-use Kanba\MyPDO;
-use Kanba\Entity\User;
+use Kanban\MyPDO;
+use Kanban\Entity\User;
 
 session_start();
 

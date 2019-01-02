@@ -1,13 +1,13 @@
 <?php
 
-namespace Kanba\Entity;
+namespace Kanban\Entity;
 
 require_once($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "autoload.php");
 
 use Faker\Factory;
-use Kanba\MyPDO;
-use Kanba\Type\IntOrNull;
-use Kanba\Type\StringOrNull;
+use Kanban\MyPDO;
+use Kanban\Type\IntOrNull;
+use Kanban\Type\StringOrNull;
 
 class User extends AbstractEntity
 {
@@ -64,18 +64,18 @@ class User extends AbstractEntity
    * Renvoie la liste des kanbas.
    * S'ils sont privés ou non.
    * @param $private
-   * @return Kanba[]
+   * @return Kanban[]
    */
   public function getKanbas($private): array
   {
-    $table = Kanba::getTableName();
+    $table = Kanban::getTableName();
     if (!$this->kanbasIsLoaded) {
       $pdo = MyPDO::getPDO();
       $id = $this->getId();
       $t = $pdo->prepare("SELECT id FROM $table WHERE ownerId = $id");
       $t->execute();
       foreach ($t->fetchAll() as $kanba) {
-        array_push($this->kanbas, new Kanba($kanba->id));
+        array_push($this->kanbas, new Kanban($kanba->id));
       }
       $this->kanbasIsLoaded = true;
     }

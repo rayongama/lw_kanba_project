@@ -12,24 +12,24 @@ if (isset($_POST['title']) && isset($_POST['dburl']) && isset($_POST['dbname'])
   $dbpasword = htmlspecialchars($_POST['dbpassword']);
 
   if (!empty($title)) {
-    \Kanba\Configurator::setEntry("TITLE", $title);
+    \Kanban\Configurator::setEntry("TITLE", $title);
     $modif = "true";
   }
   if (!empty($dburl)) {
     $modif = "true";
-    \Kanba\Configurator::setEntry("DB_URL", $dburl);
+    \Kanban\Configurator::setEntry("DB_URL", $dburl);
   }
   if (!empty($dbname)) {
     $modif = "true";
-    \Kanba\Configurator::setEntry("DB_NAME", $dbname);
+    \Kanban\Configurator::setEntry("DB_NAME", $dbname);
   }
   if (!empty($dbuser)) {
     $modif = "true";
-    \Kanba\Configurator::setEntry("DB_USERNAME", $dbuser);
+    \Kanban\Configurator::setEntry("DB_USERNAME", $dbuser);
   }
   if (!empty($dbpasword)) {
     $modif = "true";
-    \Kanba\Configurator::setEntry("DB_PASSWORD", $dbpasword);
+    \Kanban\Configurator::setEntry("DB_PASSWORD", $dbpasword);
   }
 
 
@@ -54,23 +54,23 @@ if (isset($_POST['title']) && isset($_POST['dburl']) && isset($_POST['dbname'])
   <form method="post">
     <input type="hidden" name="modif" value="<?= $modif ?>">
     <div class="input not-empty" data-placeholder="Nom du site">
-      <input type="text" name="title" value="<?= \Kanba\Configurator::getEntry("TITLE") ?>">
+      <input type="text" name="title" value="<?= \Kanban\Configurator::getEntry("TITLE") ?>">
     </div>
     <br>
     <div class="input not-empty" data-placeholder="Base de donnée">
-      <input type="text" name="dburl" value="<?= \Kanba\Configurator::getEntry("DB_URL") ?>">
+      <input type="text" name="dburl" value="<?= \Kanban\Configurator::getEntry("DB_URL") ?>">
     </div>
     <br>
     <div class="input not-empty" data-placeholder="Nom de la base">
-      <input type="text" name="dbname" value="<?= \Kanba\Configurator::getEntry("DB_NAME") ?>">
+      <input type="text" name="dbname" value="<?= \Kanban\Configurator::getEntry("DB_NAME") ?>">
     </div>
     <br>
     <div class="inline">
       <div class="input not-empty" data-placeholder="Nom d'utilisateur de la base de donnée">
-        <input type="text" name="dbuser" value="<?= \Kanba\Configurator::getEntry("DB_USERNAME") ?>">
+        <input type="text" name="dbuser" value="<?= \Kanban\Configurator::getEntry("DB_USERNAME") ?>">
       </div>
       <div class="input not-empty" data-placeholder="Mot de passe de la base de donnée">
-        <input type="password" name="dbpassword" value="<?= \Kanba\Configurator::getEntry("DB_PASSWORD") ?>">
+        <input type="password" name="dbpassword" value="<?= \Kanban\Configurator::getEntry("DB_PASSWORD") ?>">
       </div>
     </div>
     <br>

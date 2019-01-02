@@ -1,8 +1,8 @@
 <?php
 
-namespace Kanba\Entity;
+namespace Kanban\Entity;
 
-use Kanba\MyPDO;
+use Kanban\MyPDO;
 
 class Todo extends AbstractEntity
 {
@@ -56,7 +56,7 @@ class Todo extends AbstractEntity
       $this->kanbaId = intval(MyPDO::getFieldValueById(TodoList::getTableName(), $this->getListId(), 'kanba_id'));
     }
     if ($this->ownerId === null) {
-      $this->ownerId = intval(MyPDO::getFieldValueById(Kanba::getTableName(), $this->kanbaId, 'ownerId'));
+      $this->ownerId = intval(MyPDO::getFieldValueById(Kanban::getTableName(), $this->kanbaId, 'ownerId'));
     }
     return $this->ownerId;
   }

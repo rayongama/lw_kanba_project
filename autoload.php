@@ -29,6 +29,6 @@ class Loader
 {
   public static function resolvePath($path)
   {
-    return $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "Kanba" . DIRECTORY_SEPARATOR . $path;
+    return $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "Kanban" . DIRECTORY_SEPARATOR . $path;
   }
 }

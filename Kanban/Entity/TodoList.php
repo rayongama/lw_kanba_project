@@ -1,9 +1,9 @@
 <?php
 
-namespace Kanba\Entity;
+namespace Kanban\Entity;
 
 
-use Kanba\MyPDO;
+use Kanban\MyPDO;
 
 class TodoList extends AbstractEntity
 {
@@ -51,7 +51,7 @@ EOT;
 
   static function hydrate(\PDO $pdo, int $n = 10): void
   {
-    foreach (Kanba::getIds($pdo) as $kanba_id) {
+    foreach (Kanban::getIds($pdo) as $kanba_id) {
       $pdo->prepare("INSERT INTO todo_list (kanba_id, title) VALUES ($kanba_id, 'Stories')")->execute();
       $pdo->prepare("INSERT INTO todo_list (kanba_id, title) VALUES ($kanba_id, 'Terminées')")->execute();
     }

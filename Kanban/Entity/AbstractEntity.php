@@ -1,8 +1,8 @@
 <?php
 
-namespace Kanba\Entity;
+namespace Kanban\Entity;
 
-use Kanba\MyPDO;
+use Kanban\MyPDO;
 use Loader;
 
 require_once($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "autoload.php");
@@ -11,7 +11,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "autoload.php");
 /**
  * Class AbstractEntity
  * Définit une entité abstraite.
- * @package Kanba\Entity
+ * @package Kanban\Entity
  */
 abstract class AbstractEntity implements IEntity
 {
@@ -90,7 +90,7 @@ abstract class AbstractEntity implements IEntity
   }
 
   /**
-   * Récupère l'identifiant unique du Kanba.
+   * Récupère l'identifiant unique du Kanban.
    * @return int
    */
   public function getId(): int {

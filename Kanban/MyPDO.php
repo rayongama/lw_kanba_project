@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Benoit
- * Date: 26/11/2018
- * Time: 17:16
- */
 
-namespace Kanba;
+namespace Kanban;
 
 
 class MyPDO

@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
             sideNavClose();
             const kanbaId = slug.split('-')[0];
             if (kanbaId !== "-1") {
-                Kanba.load(kanbaId).then((kanba) => {
+                Kanban.load(kanbaId).then((kanba) => {
                     document.body.dataset.kanba = kanbaId;
                     main.querySelectorAll(".todo").forEach(t => t.parentElement.replaceChild(t.cloneNode(true), t));
                     const lists = main.querySelectorAll(".todo-list");
@@ -226,7 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /*
-        EV : On veut créer un nouveau Kanba
+        EV : On veut créer un nouveau Kanban
      */
     containerLinks[1].addEventListener("click", () => {
         fetch(`/api/?q=kanba-new&ownerId=${document.body.dataset.owner}`).then((r) => {
@@ -251,10 +251,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const kanbaDelete = kanbaEdit.querySelector("button");
 
     /*
-        EV : On veut supprimer un Kanba
+        EV : On veut supprimer un Kanban
      */
     kanbaDelete.addEventListener("click", () => {
-        if (confirm("Voulez-vous vraiment supprimer ce Kanba ?")) {
+        if (confirm("Voulez-vous vraiment supprimer ce Kanban ?")) {
             fetch(`/api/?q=kanba-remove&id=${document.body.dataset.kanba}`).then(() => {
                window.location = '/';
             });
@@ -262,7 +262,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     /*
-        EV : On clique sur la checkbox pour la portée du Kanba
+        EV : On clique sur la checkbox pour la portée du Kanban
      */
     kanbaPrivate.addEventListener("change", () => {
         if (kanbaPrivate.dataset.checked === `${kanbaPrivate.checked}`) {
@@ -404,6 +404,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     inputTime.defaultValue = time.innerText;
                     inputMove.dataset.defaultValue = t.dataset.listId;
                     inputDescription.defaultValue = t.title;
+                    btnRemove.disabled = todoEdit.dataset.isNew === 'y';
 
                     todoEdit.querySelector("form").reset();
 

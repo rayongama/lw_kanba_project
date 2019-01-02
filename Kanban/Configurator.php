@@ -1,6 +1,6 @@
 <?php
 
-namespace Kanba;
+namespace Kanban;
 
 use Loader;
 

@@ -1,16 +1,16 @@
 <?php
 
-use Kanba\MyPDO;
+use Kanban\MyPDO;
 
-use Kanba\Entity\AbstractEntity;
-use Kanba\Entity\Kanba;
-use Kanba\Entity\TodoList;
-use Kanba\Entity\User;
-use Kanba\Entity\Todo;
+use Kanban\Entity\AbstractEntity;
+use Kanban\Entity\Kanban;
+use Kanban\Entity\TodoList;
+use Kanban\Entity\User;
+use Kanban\Entity\Todo;
 
 require_once($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "autoload.php");
 
-$database = \Kanba\Configurator::getEntry("DB_NAME");
+$database = \Kanban\Configurator::getEntry("DB_NAME");
 
 ?>
 <!doctype html>
@@ -39,16 +39,16 @@ $database = \Kanba\Configurator::getEntry("DB_NAME");
     die;
   }
 
-  $pdo = \Kanba\MyPDO::getPDO();
+  $pdo = \Kanban\MyPDO::getPDO();
   foreach (AbstractEntity::getList() as $entity) {
     try {
-      $class = new ReflectionClass("Kanba\\Entity\\$entity");
+      $class = new ReflectionClass("Kanban\\Entity\\$entity");
     } catch (ReflectionException $e) {
       echo "$e";
     }
     $class = $class->newInstanceWithoutConstructor();
     /**
-     * @var \Kanba\Entity\IEntity $class
+     * @var \Kanban\Entity\IEntity $class
      */
     $class->migrate($pdo);
     $table = $class->getTableName();
@@ -58,7 +58,7 @@ $database = \Kanba\Configurator::getEntry("DB_NAME");
   echo "\nHydratation des utilisateurs\n";
   User::hydrate($pdo);
   echo "Hydratation des kanbas\n";
-  Kanba::hydrate($pdo);
+  Kanban::hydrate($pdo);
   echo "Hydratation des listes de tâches\n";
   TodoList::hydrate($pdo);
   echo "Hydratation des tâches\n";

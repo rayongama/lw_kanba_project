@@ -1,6 +1,6 @@
 <?php
 
-use Kanba\Entity\User;
+use Kanban\Entity\User;
 
 session_start();
 
@@ -26,15 +26,20 @@ if (isset($_POST['username']) && !empty($_POST['username'])
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?= \Kanba\Configurator::getEntry("TITLE") ?> - Connexion</title>
+  <title><?= \Kanban\Configurator::getEntry("TITLE") ?> - Connexion</title>
   <link href="/css/mymd.css" rel="stylesheet">
   <link href="/css/login.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
   <h6>Connecte-toi</h6>
-  <a href="inscription.php"><span
-        class="subtitle1"><?= $error ? "Identifiants invalides" : "Ou clique ici pour te créer un compte !" ?></span></a>
+  <a href="inscription.php">
+      <span class="subtitle1"><?= $error ? "Identifiants invalides" : "Ou clique ici pour te créer un compte !" ?></span>
+  </a>
+    <br/>
+    <a href="les-kanbans.php">
+        <span class="subtitle1">Voir les kanbans publics</span>
+    </a>
   <br>
   <br>
   <form method="post" action="se-connecter.php">

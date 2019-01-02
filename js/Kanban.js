@@ -1,4 +1,4 @@
-class Kanba {
+class Kanban {
 
     constructor(title, lists, p) {
         this._title = title;
@@ -14,7 +14,7 @@ class Kanba {
             xhr.addEventListener("readystatechange", () => {
                 if (xhr.readyState === 4) {
                     const raw = JSON.parse(xhr.response);
-                    resolve(new Kanba(raw.title, raw.lists, raw.private));
+                    resolve(new Kanban(raw.title, raw.lists, raw.private));
                 }
             });
             xhr.send();
